@@ -7,8 +7,8 @@
 - [X] ProblemTag should be property
 - [X] Add create relation between class and developer
 - [X] Public practices in problemset
-- [ ] Add relation between company and contest (sponser)
-- [ ] User can be removed :|, add cascades
+- [ ] ~~Add relation between company and contest (sponser)~~
+- [X] User can be removed :|, add cascades
 - [ ] Add register date for users
 - [ ] Add public after archieve for class
 - [ ] Remove these entities and change to property: Semester, Address, LinkType, Field, ProblemTag

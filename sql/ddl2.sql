@@ -69,3 +69,38 @@ alter table class
 alter table problemset
     add column public boolean;
 
+alter table institute
+    drop constraint fk_institute_user;
+alter table institute
+    add constraint fk_institute_user foreign key ("user") references "user" (id)
+        on delete set null;
+alter table user_role
+    drop constraint fk_user_role_user;
+alter table user_role
+    add constraint fk_user_role_user foreign key ("user") references "user" (id)
+        on delete cascade;
+alter table problemsetparticipation
+    drop constraint fk_problemsetparticipation_user;
+alter table problemsetparticipation
+    add constraint fk_problemsetparticipation_user foreign key ("user") references "user" (id)
+        on delete cascade;
+alter table submit
+    drop constraint fk_submit_user;
+alter table submit
+    add constraint fk_submit_user foreign key ("user") references "user" (id)
+        on delete cascade;
+alter table company
+    drop constraint fk_company_employer;
+alter table company
+    add constraint fk_company_employer foreign key (employer) references "user" (id)
+        on delete cascade;
+alter table demand
+    drop constraint fk_demand_developer;
+alter table demand
+    add constraint fk_demand_developer foreign key (developer) references "user" (id)
+        on delete cascade;
+alter table classparticipation
+    drop constraint fk_class_developer_developer;
+alter table classparticipation
+    add constraint fk_class_developer_developer foreign key (developer) references "user" (id)
+        on delete cascade;
