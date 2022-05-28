@@ -2,7 +2,7 @@
 ## TODO
 - [X] **Submit should be weak entity**
 - [X] Role is enum so role entity should be removed
-- [ ] Change address to property
+- [X] Change address to property
 - [ ] Link type is enum so linkType entity should be removed 
 - [ ] ProblemTag should be property
 - [ ] Add create relation between class and developer
