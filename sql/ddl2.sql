@@ -43,3 +43,8 @@ alter table company
 alter table company
     add constraint fk_company_city foreign key (city) references city (id);
 
+alter table companylink drop constraint companylink_pkey;
+alter table companylink drop column linktype;
+drop table linktype;
+alter table companylink add column type varchar(20);
+alter table companylink add constraint companylink_pkey primary key (company, type);
