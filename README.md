@@ -1,6 +1,6 @@
 # quera-db
 ## TODO
-- [ ] **Submit should be weak entity**
+- [X] **Submit should be weak entity**
 - [ ] Role is enum so role entity should be removed
 - [ ] Change address to property
 - [ ] Link type is enum so linkType entity should be removed 

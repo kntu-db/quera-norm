@@ -1,4 +1,5 @@
 -- SQL Dialect : PostgreSQL
+-- First version of schema
 
 -- Authentication
 create table State
