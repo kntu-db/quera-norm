@@ -5,7 +5,7 @@
 - [X] Change address to property
 - [X] Link type is enum so linkType entity should be removed 
 - [X] ProblemTag should be property
-- [ ] Add create relation between class and developer
+- [X] Add create relation between class and developer
 - [ ] Public practices in problemset
 - [ ] Add relation between company and contest (sponser)
 - [ ] User can be removed :|, add cascades

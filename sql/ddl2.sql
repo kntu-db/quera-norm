@@ -60,3 +60,8 @@ alter table problem_tag
     add column tag varchar(20);
 alter table problem_tag
     add constraint problem_tag_pkey primary key (problem, tag);
+
+alter table class
+    add column creator integer;
+alter table class
+    add constraint fk_class_creator foreign key (creator) references "user" (id);
