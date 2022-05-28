@@ -22,3 +22,10 @@ alter table submit_test
         on delete cascade;
 alter table submit_test
     add constraint submit_test_pkey primary key (problem, number, submit);
+
+alter table user_role drop constraint fk_user_role_role;
+alter table user_role drop constraint user_role_pkey;
+drop table role;
+alter table user_role alter column role type varchar(20);
+alter table user_role add constraint user_role_pkey primary key ("user", role);
+
