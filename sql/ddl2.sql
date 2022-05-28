@@ -65,3 +65,7 @@ alter table class
     add column creator integer;
 alter table class
     add constraint fk_class_creator foreign key (creator) references "user" (id);
+
+alter table problemset
+    add column public boolean;
+

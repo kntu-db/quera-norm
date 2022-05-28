@@ -1046,7 +1046,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="7nPUmuGI8JlBHQezXByt" name="problemset">
-        <mxGraphModel dx="1145" dy="1959" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#212121" math="0" shadow="0">
+        <mxGraphModel dx="694" dy="1648" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#212121" math="0" shadow="0">
             <root>
                 <mxCell id="CJTzZ2uIdhC68NuvdAII-0"/>
                 <mxCell id="CJTzZ2uIdhC68NuvdAII-1" parent="CJTzZ2uIdhC68NuvdAII-0"/>
@@ -1705,6 +1705,12 @@
                 </mxCell>
                 <mxCell id="4IFmXyJklQps32_ChLVC-0" value="Tag" style="ellipse;shape=doubleEllipse;margin=3;whiteSpace=wrap;html=1;align=center;gradientColor=#ABABAB;gradientDirection=radial;fillColor=#E8E8E8;fontSize=14;fontColor=#000000;fontStyle=1;strokeColor=#000000;" vertex="1" parent="CJTzZ2uIdhC68NuvdAII-1">
                     <mxGeometry x="822" y="5" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="tXK1r1MySd9E__s-0crP-1" style="edgeStyle=none;html=1;endArrow=none;endFill=0;strokeWidth=2;" edge="1" parent="CJTzZ2uIdhC68NuvdAII-1" source="tXK1r1MySd9E__s-0crP-0" target="0-AhYMaAJiGm1hwf415O-0">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="tXK1r1MySd9E__s-0crP-0" value="Public" style="ellipse;whiteSpace=wrap;html=1;align=center;rounded=1;labelBackgroundColor=none;fontFamily=Tahoma;fontSize=14;fontColor=#000000;strokeColor=#212121;strokeWidth=2;fillColor=#E8E8E8;gradientColor=#ABABAB;gradientDirection=radial;fontStyle=1" vertex="1" parent="CJTzZ2uIdhC68NuvdAII-1">
+                    <mxGeometry x="532" y="619" width="100" height="40" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
