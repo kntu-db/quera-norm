@@ -104,3 +104,6 @@ alter table classparticipation
 alter table classparticipation
     add constraint fk_class_developer_developer foreign key (developer) references "user" (id)
         on delete cascade;
+
+alter table "user"
+    add column joinedAt timestamp;

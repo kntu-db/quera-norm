@@ -9,8 +9,8 @@
 - [X] Public practices in problemset
 - [ ] ~~Add relation between company and contest (sponser)~~
 - [X] User can be removed :|, add cascades
-- [ ] Add register date for users
-- [ ] Add public after archieve for class
+- [X] Add register date for users
+- [X] Add public after archieve for class
 - [ ] Remove these entities and change to property: Semester, Address, LinkType, Field, ProblemTag
 - [ ] Convert all weak entities to strong entity (All entities should have id as primary key)
 - [ ] Remove entity company size and replace it to approximate size
