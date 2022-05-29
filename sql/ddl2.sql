@@ -16,7 +16,7 @@ alter table submit_test
 alter table submit_test
     drop column time;
 alter table submit_test
-    add column submit integer;
+    add column submit integer not null default 0;
 alter table submit_test
     add constraint fk_submit_test_submit foreign key (submit) references submit (id)
         on delete cascade;
@@ -49,7 +49,7 @@ alter table companylink
     drop column linktype;
 drop table linktype;
 alter table companylink
-    add column type varchar(20);
+    add column type varchar(20) not null default 'surrogate';
 alter table companylink
     add constraint companylink_pkey primary key (company, type);
 
@@ -57,17 +57,17 @@ alter table problem_tag
     drop column tag;
 drop table problemtag;
 alter table problem_tag
-    add column tag varchar(20);
+    add column tag varchar(20) not null default 'surrogate';
 alter table problem_tag
     add constraint problem_tag_pkey primary key (problem, tag);
 
 alter table class
-    add column creator integer;
+    add column creator integer not null default 0;
 alter table class
     add constraint fk_class_creator foreign key (creator) references "user" (id);
 
 alter table problemset
-    add column public boolean;
+    add column public boolean not null default false;
 
 alter table institute
     drop constraint fk_institute_user;
@@ -106,4 +106,10 @@ alter table classparticipation
         on delete cascade;
 
 alter table "user"
-    add column joinedAt timestamp;
+    add column joinedAt timestamp not null default now();
+
+alter table company
+    drop column size;
+drop table companysize;
+alter table company
+    add column size integer not null default 0;

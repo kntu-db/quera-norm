@@ -13,7 +13,7 @@
 - [X] Add public after archieve for class
 - [ ] Remove these entities and change to property: Semester, Address, LinkType, Field, ProblemTag
 - [ ] Convert all weak entities to strong entity (All entities should have id as primary key)
-- [ ] Remove entity company size and replace it to approximate size
+- [X] Remove entity company size and replace it to approximate size
 - [ ] Add on delete and on update for user and other entities that can be remove (based on documentation)
 
 ## How to contribute
