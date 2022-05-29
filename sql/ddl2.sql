@@ -113,3 +113,24 @@ alter table company
 drop table companysize;
 alter table company
     add column size integer not null default 0;
+
+alter table company
+    drop column field;
+drop table field;
+alter table company
+    add column field varchar(20) not null default 'surrogate';
+
+alter table class
+    drop column semester;
+drop table semester;
+alter table class
+    add column year integer not null default 0;
+alter table class
+    add column turn semesterturn not null default 'fall';
+
+alter table company_advantage
+    drop column advantage;
+drop table advantage;
+alter table company_advantage
+    add column advantage varchar(50) not null default 'surrogate';
+
