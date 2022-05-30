@@ -11,10 +11,10 @@
 - [X] User can be removed :|, add cascades
 - [X] Add register date for users
 - [X] Add public after archieve for class
-- [X] Remove these entities and change to property: Semester, Address, LinkType, Field, ProblemTag, Advantage
+- [X] Remove these entities and change to property: Semester, Address, LinkType, Field, ProblemTag, Advantage, TechnologyCategory
 - [X] Convert all weak entities to strong entity (All entities should have id as primary key)
 - [X] Remove entity company size and replace it to approximate size
-- [ ] Add on delete and on update for user and other entities that can be remove (based on documentation)
+- [X] Add on delete and on update for user and other entities that can be remove (based on documentation)
 
 ## How to contribute
 ---

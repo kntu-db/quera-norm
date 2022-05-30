@@ -134,3 +134,8 @@ drop table advantage;
 alter table company_advantage
     add column advantage varchar(50) not null default 'surrogate';
 
+alter table technology
+    drop column category;
+drop table technologycategory;
+alter table technology
+    add column category varchar(20);
