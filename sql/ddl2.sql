@@ -152,3 +152,6 @@ alter table problemsetparticipation
 alter table problem_extension
     drop constraint fk_problem_extension_extension;
 drop table extension;
+
+alter table problemset
+    add column vip boolean;
