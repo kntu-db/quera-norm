@@ -146,4 +146,9 @@ drop table problemcategory;
 alter table problem
     add column category varchar(20) not null default 'surrogate';
 
-alter table problemsetparticipation rename to problemset_user;
+alter table problemsetparticipation
+    rename to problemset_user;
+
+alter table problem_extension
+    drop constraint fk_problem_extension_extension;
+drop table extension;
