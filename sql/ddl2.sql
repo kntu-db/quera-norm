@@ -139,3 +139,9 @@ alter table technology
 drop table technologycategory;
 alter table technology
     add column category varchar(20);
+
+alter table problem
+    drop column category;
+drop table problemcategory;
+alter table problem
+    add column category varchar(20) not null default 'surrogate';
