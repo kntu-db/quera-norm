@@ -145,3 +145,5 @@ alter table problem
 drop table problemcategory;
 alter table problem
     add column category varchar(20) not null default 'surrogate';
+
+alter table problemsetparticipation rename to problemset_user;
