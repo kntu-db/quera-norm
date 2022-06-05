@@ -155,3 +155,13 @@ drop table extension;
 
 alter table problemset
     add column vip boolean;
+
+alter table "user"
+    drop column name;
+alter table "user"
+    add column firstName varchar(50) not null default 'surrogate';
+alter table "user"
+    add column lastName varchar(50) not null default 'surrogate';
+
+alter table class
+    add column publishAfterArchive boolean not null default false;
