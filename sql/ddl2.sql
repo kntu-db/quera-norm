@@ -171,3 +171,6 @@ alter table institute
 
 alter table classparticipation
     alter column studentnumber drop not null;
+
+alter table submit
+    drop column solvetime;

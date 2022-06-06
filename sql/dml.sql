@@ -49,3 +49,33 @@ from "user" d
 where concat(d.firstname, ' ', d.lastname) in ('الهام نیایشی', 'رضا ملکی', 'مرتضی مولایی', 'آرمان فدایی');
 
 -- 4 --
+insert into problemset(title, start, "end", type, class)
+values ('تمرین اول', now(), now() + interval '7 days', 'practice', 1);
+
+prepare insert_problem(integer, integer, varchar, text, integer, varchar)
+    as insert into problem(number, problemset, title, text, score, category)
+       values ($1, $2, $3, $4, $5, $6);
+execute insert_problem(1, 1, 'سوال 1', 'سوال 1', 1, 'سوالات تست');
+execute insert_problem(2, 1, 'سوال 2', 'سوال 2', 1, 'سوالات تست');
+execute insert_problem(3, 1, 'سوال 3', 'سوال 3', 1, 'سوالات تست');
+
+insert into submit(problem, "user", time, status, uri, incontest, final)
+select p.id,
+       u.id,
+       ps.start + random() * (ps."end" - ps.start),
+       'received',
+       concat(md5(random()::text), '.', 'zip'),
+       true,
+       true
+from class c
+         join problemset ps on c.id = ps.class
+         join problem p on ps.id = p.problemset
+         join classparticipation cp on c.id = cp.class
+         join "user" u on cp.developer = u.id
+where c.id = 1
+  and u.id in (select developer from classparticipation where class = c.id limit 3);
+
+update class set archived = true where id = 1;
+update problemset set public = true where class = 1;
+
+-- 5 --
