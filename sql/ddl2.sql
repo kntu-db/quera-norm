@@ -18,6 +18,8 @@ alter table submit_test
 alter table submit_test
     add column submit integer not null default 0;
 alter table submit_test
+    alter column submit drop default;
+alter table submit_test
     add constraint fk_submit_test_submit foreign key (submit) references submit (id)
         on delete cascade;
 alter table submit_test
@@ -51,6 +53,8 @@ drop table linktype;
 alter table companylink
     add column type varchar(20) not null default 'surrogate';
 alter table companylink
+    alter column type drop default;
+alter table companylink
     add constraint companylink_pkey primary key (company, type);
 
 alter table problem_tag
@@ -59,10 +63,14 @@ drop table problemtag;
 alter table problem_tag
     add column tag varchar(20) not null default 'surrogate';
 alter table problem_tag
+    alter column tag drop default;
+alter table problem_tag
     add constraint problem_tag_pkey primary key (problem, tag);
 
 alter table class
     add column creator integer not null default 0;
+alter table class
+    alter column creator drop default;
 alter table class
     add constraint fk_class_creator foreign key (creator) references "user" (id);
 
@@ -113,12 +121,16 @@ alter table company
 drop table companysize;
 alter table company
     add column size integer not null default 0;
+alter table company
+    alter column size drop default;
 
 alter table company
     drop column field;
 drop table field;
 alter table company
     add column field varchar(20) not null default 'surrogate';
+alter table company
+    alter column field drop default;
 
 alter table class
     drop column semester;
@@ -126,13 +138,19 @@ drop table semester;
 alter table class
     add column year integer not null default 0;
 alter table class
+    alter column year drop default;
+alter table class
     add column turn semesterturn not null default 'fall';
+alter table class
+    alter column turn drop default;
 
 alter table company_advantage
     drop column advantage;
 drop table advantage;
 alter table company_advantage
     add column advantage varchar(50) not null default 'surrogate';
+alter table company_advantage
+    alter column advantage drop default;
 
 alter table technology
     drop column category;
@@ -145,6 +163,8 @@ alter table problem
 drop table problemcategory;
 alter table problem
     add column category varchar(20) not null default 'surrogate';
+alter table problem
+    alter column category drop default;
 
 alter table problemsetparticipation
     rename to problemset_user;
@@ -161,7 +181,11 @@ alter table "user"
 alter table "user"
     add column firstName varchar(50) not null default 'surrogate';
 alter table "user"
+    alter column firstName drop default;
+alter table "user"
     add column lastName varchar(50) not null default 'surrogate';
+alter table "user"
+    alter column lastName drop default;
 
 alter table class
     add column publishAfterArchive boolean not null default false;
@@ -174,3 +198,8 @@ alter table classparticipation
 
 alter table submit
     drop column solvetime;
+
+alter table problem
+    alter column number drop not null;
+alter table problem
+    alter column problemset drop not null;

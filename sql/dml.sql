@@ -55,9 +55,9 @@ values ('تمرین اول', now(), now() + interval '7 days', 'practice', 1);
 prepare insert_problem(integer, integer, varchar, text, integer, varchar)
     as insert into problem(number, problemset, title, text, score, category)
        values ($1, $2, $3, $4, $5, $6);
-execute insert_problem(1, 1, 'سوال 1', 'سوال 1', 1, 'سوالات تست');
-execute insert_problem(2, 1, 'سوال 2', 'سوال 2', 1, 'سوالات تست');
-execute insert_problem(3, 1, 'سوال 3', 'سوال 3', 1, 'سوالات تست');
+execute insert_problem(1, 1, 'سوال 1', 'سوال 1', 1, 'دانشگاهی');
+execute insert_problem(2, 1, 'سوال 2', 'سوال 2', 1, 'دانشگاهی');
+execute insert_problem(3, 1, 'سوال 3', 'سوال 3', 1, 'دانشگاهی');
 
 insert into submit(problem, "user", time, status, uri, incontest, final)
 select p.id,
@@ -79,3 +79,45 @@ update class set archived = true where id = 1;
 update problemset set public = true where class = 1;
 
 -- 5 --
+execute insert_problem(null, null, 'سوال تکنولوژی 1', 'متن سوال تکنولوژی 1', 50, 'تکنولوژی');
+execute insert_problem(null, null, 'سوال تکنولوژی 2', 'متن سوال تکنولوژی 2', 100, 'تکنولوژی');
+execute insert_problem(null, null, 'سوال تکنولوژی 3', 'متن سوال تکنولوژی 3', 150, 'تکنولوژی');
+execute insert_problem(null, null, 'سوال تکنولوژی 4', 'متن سوال تکنولوژی 4', 200, 'تکنولوژی');
+execute insert_problem(null, null, 'سوال تکنولوژی 5', 'متن سوال تکنولوژی 5', 250, 'تکنولوژی');
+
+prepare insert_submit(varchar, integer)
+    as insert into submit(problem, "user", time, status, uri, score, incontest, final)
+       select p.id,
+              u.id,
+              now() + random() * interval '10 day',
+              'judged',
+              concat(md5(random()::text), '.', 'py'),
+              p.score,
+              false,
+              true
+       from "user" u,
+            problem p
+       where concat(u.firstname, ' ', u.lastname) = $1
+         and p.id in (select id from problem order by random() limit $2);
+
+execute insert_submit('علی غلامی', 4);
+execute insert_submit('سعید حجازی', 3);
+execute insert_submit('محمد رهنما', 1);
+
+create view top
+as
+select concat(u.firstname, ' ', u.lastname)                     as name,
+       split_part(u.mail, '@', 1)                               as username,
+       count(*)                                                 as count,
+       sum(case when p.category = 'تکنولوژی' then 1 else 0 end) as count_tech,
+       sum(case when p.category = 'دانشگاهی' then 1 else 0 end) as count_uni
+from "user" u
+         join submit s on u.id = s."user"
+         join problem p on s.problem = p.id
+where s.score = p.score
+  and s.status = 'judged'
+group by u.id;
+
+select * from top order by count_tech desc limit 10;
+
+-- 6 --
