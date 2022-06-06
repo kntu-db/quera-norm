@@ -174,11 +174,40 @@ execute insert_joboffer('برنامه نویس vuejs', 'علی بابا', 'بر�
 execute insert_joboffer('تحلیل گر داده', 'علی بابا', 'تحلیل گر داده');
 
 -- 8 --
-insert into demand(developer, joboffer, description, time, cvuri)
-select u.id, j.id, 'اینجانب برنامه نویس با اراده', now(), concat('cv/', md5(random()::text), '.', 'pdf')
+insert into demand(developer, joboffer, description, time, cvuri, status)
+select u.id, j.id, 'اینجانب برنامه نویس با اراده', now(), concat('cv/', md5(random()::text), '.', 'pdf'), 'pending'
 from "user" u,
      joboffer j
          join company c on j.company = c.id
 where concat(u.firstname, ' ', u.lastname) = 'الهام نیایشی'
   and j.title = 'تحلیل گر داده'
   and c.name = 'اسنپ';
+
+update demand set status = 'rejected'
+where joboffer = (select id from joboffer where title = 'تحلیل گر داده' and company = (select id from company where name = 'اسنپ'))
+and developer = (select id from "user" where concat(firstname, ' ', lastname) = 'الهام نیایشی');
+
+-- Delete
+delete
+from "user" u
+where u.joinedat < now() - interval '1 month'
+  and not exists(select 1 from classparticipation cp where cp.developer = u.id)
+  and not exists(select 1 from submit s where s."user" = u.id);
+
+-- Insert
+create table temp as
+select
+from company c
+where exists(select 1
+             from joboffer j
+             where j.company = c.id
+               and exists(select 1 from demand d where d.joboffer = j.id and d.status = 'accepted'));
+
+-- View
+create view Active40 as
+select
+from class c
+         join classparticipation cp on c.id = cp.class
+where c.archived = false
+group by c.id
+having count(cp.developer) >= 40;

@@ -211,3 +211,9 @@ alter table "user"
 
 alter table company
     drop column title;
+
+create type DemandStatus as enum ('pending', 'accepted', 'rejected', 'cancelled');
+alter table demand
+    add column status DemandStatus not null default 'pending';
+alter table demand
+    alter column status drop default;
