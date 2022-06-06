@@ -143,3 +143,42 @@ where ps.title = 'تحلیل داده'
     in ('محمد رهنما', 'آرمان فدایی', 'محمد سجادی', 'علی محمدی');
 
 -- 7 --
+insert into "user"(firstname, lastname, mail, password, type, status)
+values ('منابع انسانی', 'اسنپ', 'hr@snapp.com', '1234', 'employer', 'active');
+
+insert into company(name, description, logo, employer, size, field)
+select 'اسنپ', 'تاکسی اینترنتی', 'logo/snapp.png', u.id, 2000, 'تاکسی اینترنتی'
+from "user" u
+where concat(u.firstname, ' ', u.lastname) = 'منابع انسانی اسنپ';
+
+insert into "user"(firstname, lastname, mail, password, type, status)
+values ('منابع انسانی', 'علی بابا', 'hr@alibaba.com', '1234', 'employer', 'active');
+
+insert into company(name, description, logo, employer, size, field)
+select 'علی بابا', 'بلیط', 'logo/alibaba.png', u.id, 1000, 'بلیط'
+from "user" u
+where concat(u.firstname, ' ', u.lastname) = 'منابع انسانی علی بابا';
+
+prepare insert_joboffer(varchar, varchar, text) as
+    insert into joboffer(level, cooperation, workdistance, title, company, city, description, createdat)
+    select 'middle', 'full_time', false, $1, co.id, c.id, $3, now()
+    from company co,
+         city c
+    where c.name = 'تهران'
+      and co.name = $2;
+
+execute insert_joboffer('برنامه نویس golang', 'اسنپ', 'به یک برنامه نویس باهوش نیازمندیم :)');
+execute insert_joboffer('تحلیل گر داده', 'اسنپ', 'تحلیل گر داده');
+
+execute insert_joboffer('برنامه نویس vuejs', 'علی بابا', 'برنامه نویس فرانت اند');
+execute insert_joboffer('تحلیل گر داده', 'علی بابا', 'تحلیل گر داده');
+
+-- 8 --
+insert into demand(developer, joboffer, description, time, cvuri)
+select u.id, j.id, 'اینجانب برنامه نویس با اراده', now(), concat('cv/', md5(random()::text), '.', 'pdf')
+from "user" u,
+     joboffer j
+         join company c on j.company = c.id
+where concat(u.firstname, ' ', u.lastname) = 'الهام نیایشی'
+  and j.title = 'تحلیل گر داده'
+  and c.name = 'اسنپ';
