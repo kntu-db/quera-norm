@@ -168,3 +168,6 @@ alter table class
 
 alter table institute
     alter column "user" drop not null;
+
+alter table classparticipation
+    alter column studentnumber drop not null;

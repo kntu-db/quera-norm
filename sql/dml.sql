@@ -43,3 +43,9 @@ where u.firstname = 'زهره'
 end;
 
 -- 3 --
+insert into classparticipation(class, developer)
+select 1, d.id
+from "user" d
+where concat(d.firstname, ' ', d.lastname) in ('الهام نیایشی', 'رضا ملکی', 'مرتضی مولایی', 'آرمان فدایی');
+
+-- 4 --
