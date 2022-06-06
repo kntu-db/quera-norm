@@ -43,10 +43,12 @@ where u.firstname = 'زهره'
 end;
 
 -- 3 --
+begin;
 insert into classparticipation(class, developer)
 select 1, d.id
 from "user" d
 where concat(d.firstname, ' ', d.lastname) in ('الهام نیایشی', 'رضا ملکی', 'مرتضی مولایی', 'آرمان فدایی');
+end;
 
 -- 4 --
 insert into problemset(title, start, "end", type, class)
@@ -64,7 +66,7 @@ select p.id,
        u.id,
        ps.start + random() * (ps."end" - ps.start),
        'received',
-       concat(md5(random()::text), '.', 'zip'),
+       concat('submit/', md5(random()::text), '.', 'zip'),
        true,
        true
 from class c
@@ -91,7 +93,7 @@ prepare insert_submit(varchar, integer)
               u.id,
               now() + random() * interval '10 day',
               'judged',
-              concat(md5(random()::text), '.', 'py'),
+              concat('submit/', md5(random()::text), '.', 'py'),
               p.score,
               false,
               true
@@ -121,3 +123,23 @@ group by u.id;
 select * from top order by count_tech desc limit 10;
 
 -- 6 --
+insert into "user"(firstname, lastname, mail, password, type, status)
+values ('منابع انسانی', 'دیجی کالا', 'hr@digikala.com', '1234', 'employer', 'active');
+
+insert into company(name, description, logo, employer, size, field)
+select 'دیجی کالا', 'خرید آنلاین محصولات', 'logo/digikala.png', u.id, 1500, 'خرده فروشی'
+from "user" u
+where concat(u.firstname, ' ', u.lastname) = 'منابع انسانی دیجی کالا';
+
+insert into problemset(title, start, "end", type, sponsor, vip)
+values ('تحلیل داده', now() + interval '1 day', now() + interval '2 day', 'contest', 'دیجی کالا و اسنپ', true);
+
+insert into contest_user ("user", problemset)
+select u.id, ps.id
+from "user" u,
+     problemset ps
+where ps.title = 'تحلیل داده'
+  and concat(u.firstname, ' ', u.lastname)
+    in ('محمد رهنما', 'آرمان فدایی', 'محمد سجادی', 'علی محمدی');
+
+-- 7 --

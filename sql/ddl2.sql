@@ -167,7 +167,7 @@ alter table problem
     alter column category drop default;
 
 alter table problemsetparticipation
-    rename to problemset_user;
+    rename to contest_user;
 
 alter table problem_extension
     drop constraint fk_problem_extension_extension;
@@ -203,3 +203,11 @@ alter table problem
     alter column number drop not null;
 alter table problem
     alter column problemset drop not null;
+
+alter table "user"
+    alter column public drop default;
+alter table "user"
+    alter column public drop not null;
+
+alter table company
+    drop column title;
