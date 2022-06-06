@@ -1,3 +1,0 @@
--- SQL Dialect : PostgreSQL
--- Third version of schema
--- Normalization
