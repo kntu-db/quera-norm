@@ -165,3 +165,6 @@ alter table "user"
 
 alter table class
     add column publishAfterArchive boolean not null default false;
+
+alter table institute
+    alter column "user" drop not null;

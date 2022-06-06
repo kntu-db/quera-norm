@@ -1,5 +1,6 @@
 -- Insert & Update
 
+-- 1 --
 prepare user_insert(varchar, varchar, varchar, varchar, userstatus, varchar, usertype, boolean, timestamp)
     as insert into "user" (firstname, lastname, mail, password, status, phone, type, public, joinedat)
        values ($1, $2, $3, $4, $5, $6, $7, $8, $9);
@@ -17,3 +18,28 @@ execute user_insert('محمد', 'سجادی', 'm.sajjadi@gmail.com', '1234', 'ac
 execute user_insert('علی', 'محمدی', 'a.mohammadi@gmail.com', '1234', 'active', '09171515278', 'developer', true, now());
 end;
 
+-- 2 --
+begin;
+insert into state(id, name)
+values (1, 'تهران');
+insert into city(name, state)
+values ('تهران', 1);
+insert into institute(name, type, city)
+values ('خواجه نصیرالدین طوسی', 'university', 1);
+insert into class(title, professor, description, password, institute, year, turn, creator)
+select 'پایگاه داده',
+       'دکتر زهره رسولی',
+       'کلاس تست پایگاه داده',
+       'salamdb',
+       i.id,
+       '1400',
+       'spring',
+       u.id
+from "user" u,
+     institute i
+where u.firstname = 'زهره'
+  and u.lastname = 'رسولی'
+  and i.name = 'خواجه نصیرالدین طوسی';
+end;
+
+-- 3 --
