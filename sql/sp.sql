@@ -81,3 +81,54 @@ $$;
 select * from NearDeadline2(8, 5);
 
 -- 3 --
+insert into problemset(title, start, "end", type, sponsor, vip)
+values ('دروغ 13', now() + interval '1 day', now() + interval '1 day 3 hours', 'contest', 'دیوار', true);
+
+insert into problem(number, problemset, title, text, score, category)
+values (1, 3, 'دروغ بزرگ', 'این یک دروغ است :)', 50, 'المپیاد'),
+       (2, 3, 'دروغ متوسط', 'این یک دروغ است :)', 100, 'المپیاد'),
+       (3, 3, 'دروغ کوچک', 'این یک دروغ است :)', 200, 'المپیاد');
+
+prepare n_problem_for_contest(varchar, varchar, integer)
+    as insert into submit(problem, "user", time, status, uri, score, incontest, final)
+       select p.id,
+              u.id,
+              now() + random() * interval '10 day',
+              'judged',
+              concat('submit/', md5(random()::text), '.', 'java'),
+              p.score,
+              random()::int::boolean,
+              true
+       from "user" u,
+            problem p
+       where concat(u.firstname, ' ', u.lastname) = $1
+         and p.id in (select p2.id
+                      from problem p2
+                               join problemset ps on p2.problemset = ps.id
+                      where ps.title = $2
+                      limit $3);
+
+execute n_problem_for_contest('علی غلامی', 'دروغ 13', 3);
+execute n_problem_for_contest('رضا ملکی', 'دروغ 13', 3);
+execute n_problem_for_contest('زهره رسولی', 'دروغ 13', 1);
+
+create function AverageNameQuestion(X varchar, Y varchar, C integer) returns float
+    language sql as
+$$
+select avg(length(lastname))
+from (select u.lastname as lastname
+      from "user" u
+               join submit s on u.id = s."user"
+               join problem p on s.problem = p.id
+               join problemset ps on p.problemset = ps.id
+      where ps.title = X
+        and p.category = Y
+        and s.score = p.score
+        and s.status = 'judged'
+      group by u.id
+      having count(s.problem) > C) t;
+$$;
+
+select * from AverageNameQuestion('دروغ 13', 'المپیاد', 2);
+
+-- 4 --
