@@ -1,22 +1,17 @@
 -- Insert & Update
 
 -- 1 --
-prepare user_insert(varchar, varchar, varchar, varchar, userstatus, varchar, usertype, boolean, timestamp)
-    as insert into "user" (firstname, lastname, mail, password, status, phone, type, public, joinedat)
-       values ($1, $2, $3, $4, $5, $6, $7, $8, $9);
-
-begin;
-execute user_insert('علی', 'غلامی', 'ali@gmail.com', '1234', 'active', '09181234458', 'developer', true, now());
-execute user_insert('زهره', 'رسولی', 'zohre@gmail.com', '1234', 'active', '09123564485', 'developer', true, now());
-execute user_insert('الهام', 'نیایشی', 'eli@gmail.com', '1234', 'active', '09154863951', 'developer', true, now());
-execute user_insert('رضا', 'ملکی', 'rez.mal@gmail.com', '1234', 'active', '09218585858', 'developer', true, now());
-execute user_insert('مرتضی', 'مولایی', 'morri@gmail.com', '1234', 'active', '09369696969', 'developer', true, now());
-execute user_insert('سعید', 'حجازی', 'saeed@gmail.com', '1234', 'active', '09019054811', 'developer', true, now());
-execute user_insert('محمد', 'رهنما', 'mohammad@gmail.com', '1234', 'active', '09151250051', 'developer', true, now());
-execute user_insert('آرمان', 'فدایی', 'arman@gmail.com', '1234', 'active', '09511225285', 'developer', true, now());
-execute user_insert('محمد', 'سجادی', 'm.sajjadi@gmail.com', '1234', 'active', '09191515582', 'developer', true, now());
-execute user_insert('علی', 'محمدی', 'a.mohammadi@gmail.com', '1234', 'active', '09171515278', 'developer', true, now());
-end;
+insert into "user" (firstname, lastname, mail, password, status, phone, type, public, joinedat)
+values ('علی', 'غلامی', 'ali@gmail.com', '1234', 'active', '09181234458', 'developer', true, now()),
+       ('زهره', 'رسولی', 'zohre@gmail.com', '1234', 'active', '09123564485', 'developer', true, now()),
+       ('الهام', 'نیایشی', 'eli@gmail.com', '1234', 'active', '09154863951', 'developer', true, now()),
+       ('رضا', 'ملکی', 'rez.mal@gmail.com', '1234', 'active', '09218585858', 'developer', true, now()),
+       ('مرتضی', 'مولایی', 'morri@gmail.com', '1234', 'active', '09369696969', 'developer', true, now()),
+       ('سعید', 'حجازی', 'saeed@gmail.com', '1234', 'active', '09019054811', 'developer', true, now()),
+       ('محمد', 'رهنما', 'mohammad@gmail.com', '1234', 'active', '09151250051', 'developer', true, now()),
+       ('آرمان', 'فدایی', 'arman@gmail.com', '1234', 'active', '09511225285', 'developer', true, now()),
+       ('محمد', 'سجادی', 'm.sajjadi@gmail.com', '1234', 'active', '09191515582', 'developer', true, now()),
+       ('علی', 'محمدی', 'a.mohammadi@gmail.com', '1234', 'active', '09171515278', 'developer', true, now());
 
 -- 2 --
 begin;
@@ -54,12 +49,10 @@ end;
 insert into problemset(title, start, "end", type, class)
 values ('تمرین اول', now(), now() + interval '7 days', 'practice', 1);
 
-prepare insert_problem(integer, integer, varchar, text, integer, varchar)
-    as insert into problem(number, problemset, title, text, score, category)
-       values ($1, $2, $3, $4, $5, $6);
-execute insert_problem(1, 1, 'سوال 1', 'سوال 1', 1, 'دانشگاهی');
-execute insert_problem(2, 1, 'سوال 2', 'سوال 2', 1, 'دانشگاهی');
-execute insert_problem(3, 1, 'سوال 3', 'سوال 3', 1, 'دانشگاهی');
+insert into problem(number, problemset, title, text, score, category)
+values (1, 1, 'سوال 1', 'سوال 1', 1, 'دانشگاهی'),
+       (2, 1, 'سوال 2', 'سوال 2', 1, 'دانشگاهی'),
+       (3, 1, 'سوال 3', 'سوال 3', 1, 'دانشگاهی');
 
 insert into submit(problem, "user", time, status, uri, incontest, final)
 select p.id,
@@ -81,11 +74,12 @@ update class set archived = true where id = 1;
 update problemset set public = true where class = 1;
 
 -- 5 --
-execute insert_problem(null, null, 'سوال تکنولوژی 1', 'متن سوال تکنولوژی 1', 50, 'تکنولوژی');
-execute insert_problem(null, null, 'سوال تکنولوژی 2', 'متن سوال تکنولوژی 2', 100, 'تکنولوژی');
-execute insert_problem(null, null, 'سوال تکنولوژی 3', 'متن سوال تکنولوژی 3', 150, 'تکنولوژی');
-execute insert_problem(null, null, 'سوال تکنولوژی 4', 'متن سوال تکنولوژی 4', 200, 'تکنولوژی');
-execute insert_problem(null, null, 'سوال تکنولوژی 5', 'متن سوال تکنولوژی 5', 250, 'تکنولوژی');
+insert into problem(title, text, score, category)
+values ('سوال تکنولوژی 1', 'متن سوال تکنولوژی 1', 50, 'تکنولوژی'),
+       ('سوال تکنولوژی 2', 'متن سوال تکنولوژی 2', 100, 'تکنولوژی'),
+       ('سوال تکنولوژی 3', 'متن سوال تکنولوژی 3', 150, 'تکنولوژی'),
+       ('سوال تکنولوژی 4', 'متن سوال تکنولوژی 4', 200, 'تکنولوژی'),
+       ('سوال تکنولوژی 5', 'متن سوال تکنولوژی 5', 250, 'تکنولوژی');
 
 prepare insert_submit(varchar, integer)
     as insert into submit(problem, "user", time, status, uri, score, incontest, final)
