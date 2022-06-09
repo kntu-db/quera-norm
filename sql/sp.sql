@@ -273,3 +273,51 @@ $$;
 select * from MostWantedJobs(5,'دیجی کالا', 'C#', 'junior');
 
 -- 12 --
+create function NoCompetition(X varchar)
+    returns table
+            (
+                name   varchar,
+                family varchar
+            )
+    language sql
+as
+$$
+select u.firstname, u.lastname
+from "user" u
+where not exists(select 1 from contest_user cu where cu."user" = u.id)
+   or not exists(select 1
+                 from classparticipation cp
+                          join class c on cp.class = c.id
+                          join institute i on c.institute = i.id
+                 where cp.developer = u.id
+                   and i.name <> X);
+$$;
+
+select * from NoCompetition('امیر کبیر');
+
+-- 13 --
+create function CompleteScores(A varchar) returns setof varchar
+    language sql as
+$$
+select concat(u.firstname, ' ', u.lastname)
+from class c
+         join classparticipation cp on c.id = cp.class
+         join "user" u on cp.developer = u.id
+where c.title = A
+  and u.id not in (select t.developer
+                   from (select cp.developer as developer, p.id
+                         from classparticipation cp
+                                  join problemset ps on c.id = ps.class
+                                  join problem p on ps.id = p.problemset
+                         where cp.class = c.id
+                         except
+                         select s."user", s.problem
+                         from submit s
+                                  join problem p on s.problem = p.id
+                         where s.incontest
+                           and s.score = p.score) t);
+$$;
+
+select * from CompleteScores('ریاضیات گسسته');
+
+-- 14 --
