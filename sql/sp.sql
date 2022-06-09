@@ -234,3 +234,22 @@ $$;
 select * from MostPopulatedClass('امیر کبیر', 'fall', 1399);
 
 -- 10 --
+create function AllCompanies(Y varchar, X varchar) returns setof varchar
+    language sql as
+$$
+select name
+from company
+where not exists(select 1
+                 from demand d
+                          join joboffer j on d.joboffer = j.id
+                          join "user" u on d.developer = u.id
+                          join institute i on u.institute = i.id
+                          join city c on u.city = c.id
+                 where j.company = company.id
+                   and c.name = X
+                   and i.name = Y);
+$$;
+
+select * from AllCompanies('تهران', 'قزوین');
+
+-- 11 --
