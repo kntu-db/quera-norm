@@ -155,7 +155,7 @@ where concat(u.firstname, ' ', u.lastname) = 'منابع انسانی علی ب�
 
 prepare insert_joboffer(varchar, varchar, text) as
     insert into joboffer(level, cooperation, workdistance, title, company, city, description, createdat)
-    select 'middle', 'full_time', false, $1, co.id, c.id, $3, now()
+    select 'middle', 'part_time', false, $1, co.id, c.id, $3, now()
     from company co,
          city c
     where c.name = 'تهران'

@@ -172,3 +172,24 @@ $$;
 select * from ActiveProfessors('تکنولوژی', 'خواجه نصیرالدین طوسی', 5);
 
 -- 7 --
+create function LookingForJob(A integer, B integer, C jobcooperation)
+    returns float
+    language sql as
+$$
+select avg((extract(days from (now() - u.birthdate)) / 365.25)::integer)
+from "user" u
+         join city ct on u.city = ct.id
+where u.type = 'developer'
+  and exists(select 1
+             from demand d
+                      join joboffer j on d.joboffer = j.id
+                      join company co on j.company = co.id
+             where d.developer = u.id
+               and co.city = ct.id
+               and j.cooperation = C
+               and A <= co.size and co.size <= B);
+$$;
+
+select * from LookingForJob(1000, 2000, 'part_time');
+
+-- 8 --

@@ -217,3 +217,6 @@ alter table demand
     add column status DemandStatus not null default 'pending';
 alter table demand
     alter column status drop default;
+
+alter table "user"
+    add column birthdate date;
