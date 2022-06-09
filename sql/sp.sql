@@ -253,3 +253,23 @@ $$;
 select * from AllCompanies('تهران', 'قزوین');
 
 -- 11 --
+create function MostWantedJobs(X integer, A varchar, B varchar, C developerlevel) returns setof joboffer
+    language sql as
+$$
+select j.*
+from joboffer j
+         left join demand d on j.id = d.joboffer
+         left join company co on j.company = co.id
+         left join joboffer_technology jt on j.id = jt.joboffer
+         left join technology t on jt.technology = t.id
+where t.title = B
+  and co.name = A
+  and j.level = C
+group by j.id
+order by count(d.developer) desc
+limit X;
+$$;
+
+select * from MostWantedJobs(5,'دیجی کالا', 'C#', 'junior');
+
+-- 12 --
