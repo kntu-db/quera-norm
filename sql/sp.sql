@@ -15,31 +15,6 @@ where u.firstname like A || '%'
 group by u.id
 $$;
 
-insert into class(title, professor, description, password, institute, year, turn, creator)
-select 'میانی کامپیوتر',
-       'علی غلامی',
-       'کلاس درس علی',
-       '123',
-       i.id,
-       '1400',
-       'fall',
-       u.id
-from "user" u,
-     institute i
-where u.mail = 'ali@gmail.com'
-  and i.name = 'خواجه نصیرالدین طوسی';
-
-insert into "user" (firstname, lastname, mail, password, status, phone, type, public, joinedat)
-values ('یلدا', 'کمالی', 'y.kamali@gmail.com', '1234', 'active', '09365648151', 'developer', true, now()),
-       ('یگانه', 'محمودی', 'y.mahmoodi@gmail.com', '1234', 'active', '0990151510', 'developer', true, now());
-
-insert into classparticipation (class, developer)
-select c.id, u.id
-from "user" u,
-     class c
-where u.mail = 'y.kamali@gmail.com'
-  and c.title = 'میانی کامپیوتر';
-
 select * from NumClasses('ی');
 
 -- 2 --
@@ -81,37 +56,6 @@ $$;
 select * from NearDeadline2(8, 5);
 
 -- 3 --
-insert into problemset(title, start, "end", type, sponsor, vip)
-values ('دروغ 13', now() + interval '1 day', now() + interval '1 day 3 hours', 'contest', 'دیوار', true);
-
-insert into problem(number, problemset, title, text, score, category)
-values (1, 3, 'دروغ بزرگ', 'این یک دروغ است :)', 50, 'المپیاد'),
-       (2, 3, 'دروغ متوسط', 'این یک دروغ است :)', 100, 'المپیاد'),
-       (3, 3, 'دروغ کوچک', 'این یک دروغ است :)', 200, 'المپیاد');
-
-prepare n_problem_for_contest(varchar, varchar, integer)
-    as insert into submit(problem, "user", time, status, uri, score, incontest, final)
-       select p.id,
-              u.id,
-              now() + random() * interval '10 day',
-              'judged',
-              concat('submit/', md5(random()::text), '.', 'java'),
-              p.score,
-              random()::int::boolean,
-              true
-       from "user" u,
-            problem p
-       where concat(u.firstname, ' ', u.lastname) = $1
-         and p.id in (select p2.id
-                      from problem p2
-                               join problemset ps on p2.problemset = ps.id
-                      where ps.title = $2
-                      limit $3);
-
-execute n_problem_for_contest('علی غلامی', 'دروغ 13', 3);
-execute n_problem_for_contest('رضا ملکی', 'دروغ 13', 3);
-execute n_problem_for_contest('زهره رسولی', 'دروغ 13', 1);
-
 create function AverageNameQuestion(X varchar, Y varchar, C integer) returns float
     language sql as
 $$
@@ -132,11 +76,6 @@ $$;
 select * from AverageNameQuestion('دروغ 13', 'المپیاد', 2);
 
 -- 4 --
-insert into classparticipation (class, developer)
-select 1, u.id
-from "user" u
-where u.mail = 'y.kamali@gmail.com';
-
 create function compareSemester(t1 semesterturn, y1 integer, t2 semesterturn, y2 integer)
     returns integer
     language sql
@@ -176,3 +115,29 @@ $$;
 select * from FavoriteStudent('علی غلامی', 'spring', 99);
 
 -- 5 --
+create function BestRecently(X integer, Y date)
+    returns table
+            (
+                user_name    varchar,
+                contest_name varchar,
+                score        integer
+            )
+    language sql
+as
+$$
+select concat(u.firstname, ' ', u.lastname), ps.title, sum(coalesce(s.score, 0))
+from "user" u
+         left join contest_user cu on u.id = cu."user"
+         left join problemset ps on cu.problemset = ps.id
+         left join problem p on ps.id = p.problemset
+         left join submit s on u.id = s."user" and p.id = s.problem
+where (s.final or s.final is null)
+  and (s.incontest or incontest is null)
+  and ps.vip
+  and ps.start >= Y
+group by u.id, ps.id
+order by sum(coalesce(s.score, 0)) desc
+limit X;
+$$;
+
+select * from BestRecently(5, (now() - interval '5 day')::date);
