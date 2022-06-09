@@ -193,3 +193,44 @@ $$;
 select * from LookingForJob(1000, 2000, 'part_time');
 
 -- 8 --
+create function NumSolutions(X varchar)
+    returns table
+            (
+                category varchar,
+                num      integer
+            )
+    language sql
+as
+$$
+select p.category,
+       sum(case
+               when X = 'حل شده' then case when s.score = p.score then 1 else 0 end
+               else case when s.score < p.score then 1 else 0 end
+           end)
+from problem p
+         left join submit s on p.id = s.problem
+group by p.category;
+$$;
+
+select * from NumSolutions('حل شده');
+
+-- 9 --
+create function MostPopulatedClass(X varchar, Yturn semesterturn, Yyear integer)
+    returns integer
+    language sql as
+$$
+select max(count)
+from (select count(u.id) as count
+      from "user" u
+               join classparticipation cp on u.id = cp.developer
+               right join class c on cp.class = c.id
+               join institute i on c.institute = i.id
+      where c.turn = Yturn
+        and c.year = Yyear
+        and i.name = X
+      group by c.id) t;
+$$;
+
+select * from MostPopulatedClass('امیر کبیر', 'fall', 1399);
+
+-- 10 --
