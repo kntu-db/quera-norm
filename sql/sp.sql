@@ -141,3 +141,34 @@ limit X;
 $$;
 
 select * from BestRecently(5, (now() - interval '5 day')::date);
+
+-- 6 --
+create function ActiveProfessors(X varchar, Y varchar, A integer)
+    returns table
+            (
+                name varchar
+            )
+    language sql
+as
+$$
+select concat(u.firstname, ' ', u.lastname)
+from "user" u
+         join submit s on u.id = s."user"
+         join problem p on s.problem = p.id
+where exists(select 1 from problem_tag where problem = p.id and tag = X)
+  and exists(select 1
+             from class
+                      join institute i on class.institute = i.id
+             where creator = u.id
+               and not archived
+               and i.name = Y)
+  and s.status = 'judged'
+  and s.score = p.score
+group by u.id
+order by count(distinct s.problem) desc
+limit A;
+$$;
+
+select * from ActiveProfessors('تکنولوژی', 'خواجه نصیرالدین طوسی', 5);
+
+-- 7 --
