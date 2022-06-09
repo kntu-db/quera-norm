@@ -132,3 +132,47 @@ $$;
 select * from AverageNameQuestion('دروغ 13', 'المپیاد', 2);
 
 -- 4 --
+insert into classparticipation (class, developer)
+select 1, u.id
+from "user" u
+where u.mail = 'y.kamali@gmail.com';
+
+create function compareSemester(t1 semesterturn, y1 integer, t2 semesterturn, y2 integer)
+    returns integer
+    language sql
+as
+$$
+select case
+           when y1 = y2 then
+               case
+                   when t1 = t2 then 0
+                   when t1 > t2 then 1
+                   else -1
+                   end
+           when y1 > y2 then 1
+           else -1 end;
+$$;
+
+create function FavoriteStudent(A varchar, Xturn semesterturn, Xyear integer)
+    returns setof "user"
+    language sql
+as
+$$
+select u.*
+from "user" u
+where exists(select 1
+             from class c
+                      join "user" p on c.creator = p.id
+             where not c.archived
+               and concat(p.firstname, ' ', p.lastname) = A
+               and exists(select 1 from classparticipation cp where cp.class = c.id and cp.developer = u.id))
+  and exists(select 1
+             from class c
+             where exists(select 1 from classparticipation cp where cp.class = c.id and cp.developer = u.id)
+               and c.archived
+               and compareSemester(c.turn, c.year, Xturn, Xyear) = 1);
+$$;
+
+select * from FavoriteStudent('علی غلامی', 'spring', 99);
+
+-- 5 --
