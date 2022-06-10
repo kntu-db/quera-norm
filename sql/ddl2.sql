@@ -220,3 +220,11 @@ alter table demand
 
 alter table "user"
     add column birthdate date;
+
+alter table city
+    drop column state;
+drop table state;
+alter table city
+    add column state varchar(255) not null default 'surrogate';
+alter table city
+    alter column state drop default;
