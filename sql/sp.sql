@@ -321,7 +321,31 @@ $$;
 select * from CompleteScores('ریاضیات گسسته');
 
 -- 14 --
+create function NumberOfActivities(X integer, Y varchar, P varchar, A date, B date, C integer) returns setof "user"
+    language sql as
+$$
+select u.*
+from (select cp.developer as developer
+      from class c
+               join "user" u on c.creator = u.id
+               join classparticipation cp on c.id = cp.class
+      where concat(u.firstname, ' ', u.lastname) = Y
+      group by cp.developer
+      having count(distinct cp.class) = X
+      intersect
+      select d.developer as developer
+      from demand d
+               join joboffer j on d.joboffer = j.id
+               join company co on j.company = co.id
+      where co.name = P
+        and A <= d.time
+        and d.time <= B
+      group by d.developer
+      having count(distinct d.joboffer) >= C) t
+         join "user" u on t.developer = u.id;
+$$;
 
+select * from NumberOfActivities(1, 'زهره رسولی', 'اسنپ', '2022-6-5', '2022-6-11', 2);
 
 -- 15 --
 create function OurSmartStudents(X varchar, Y varchar) returns setof "user"
