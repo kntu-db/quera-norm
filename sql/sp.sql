@@ -321,3 +321,58 @@ $$;
 select * from CompleteScores('ریاضیات گسسته');
 
 -- 14 --
+
+
+-- 15 --
+create function OurSmartStudents(X varchar, Y varchar) returns setof "user"
+    language sql as
+$$
+select u.*
+from problemset ps
+         join contest_user cu on ps.id = cu.problemset
+         join "user" u on cu."user" = u.id
+where ps.title = X
+  and not exists(select 1
+                 from problem p
+                 where p.problemset = ps.id
+                   and not exists(select 1
+                                  from submit s
+                                  where s.problem = p.id
+                                    and s."user" = u.id
+                                    and s.score = p.score
+                                    and s.incontest))
+  and exists(select 1
+             from classparticipation cp
+                      join class c on cp.class = c.id
+                      join institute i on c.institute = i.id
+             where cp.developer = u.id
+               and i.name = Y);
+$$;
+
+select * from OurSmartStudents('خداحافظ 1400', 'خواجه نصیرالدین طوسی');
+
+-- 16 --
+create function AllJobs(A varchar, B integer) returns setof varchar
+    language sql as
+$$
+select u.lastname
+from (select u.id as userId
+      from "user" u
+               join demand d on u.id = d.developer
+               join joboffer j on d.joboffer = j.id
+               join company c on j.company = c.id
+      where c.name = A
+      group by u.id, c.id
+      having count(distinct d.joboffer) = (select count(*) from joboffer jj where jj.company = c.id)
+      except
+      select u.id as userId
+      from "user" u
+      where exists(select 1
+                   from classparticipation cp
+                            join class c on cp.class = c.id
+                   where cp.developer = u.id
+                     and c.maxcount > B)) t
+         join "user" u on t.userId = u.id;
+$$;
+
+select * from AllJobs('اسنپ', 40);
