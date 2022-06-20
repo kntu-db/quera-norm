@@ -27,3 +27,5 @@
 - open [draw.io?mode=github](https://draw.io/?mode=github)
 - click on "Open Existing Diagram" option
 - authorize using github
+
+less is more :)
